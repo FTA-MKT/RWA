@@ -83,7 +83,7 @@ function DistributionDetail({ dist, onBack }) {
                   { label: 'Holders Paid', value: `${dist.holdersPaid}` },
                   { label: 'Status', value: <Pill tone="good" dot>Completed</Pill> },
                   { label: 'Total Net Distributable', value: fmtFull(dist.netDistributable) },
-                  { label: 'Total Distributed', value: '$72,500.00' },
+                  { label: 'Total Distributed', value: '$71,878.13' },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <div style={{ fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 0.7 }}>{label}</div>
@@ -128,9 +128,9 @@ function DistributionDetail({ dist, onBack }) {
                 <tfoot>
                   <tr style={{ background: 'var(--bg)', borderTop: '2px solid var(--line-strong)' }}>
                     <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--ink)' }}>Total</td>
-                    <td style={{ padding: '12px 16px', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>11,500</td>
+                    <td style={{ padding: '12px 16px', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>11,500.5</td>
                     <td style={{ padding: '12px 16px', fontWeight: 700 }}>23.00%</td>
-                    <td style={{ padding: '12px 16px', textAlign: 'right', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>$72,500.00</td>
+                    <td style={{ padding: '12px 16px', textAlign: 'right', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>$71,878.13</td>
                     <td colSpan={4} style={{ padding: '12px 16px' }} />
                   </tr>
                 </tfoot>

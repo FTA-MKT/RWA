@@ -89,7 +89,7 @@ export default function Dashboard({ navigate }) {
       {/* 4 stat cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
         <StatCard icon={<I.assets size={16} />} label="Assets" value="1 Active" sub="Meridian Multifamily" />
-        <StatCard icon={<I.tokenization size={16} />} label="Tokens Minted" value="38,000" sub="of 50,000 total supply" />
+        <StatCard icon={<I.tokenization size={16} />} label="Tokens Minted" value="38,000.5" sub="of 50,000 total supply" />
         <StatCard icon={<I.shield size={16} />} label="Verified Investors" value="11" sub="11 accredited" />
         <StatCard icon={<I.distributions size={16} />} label="Distributions Paid" value="$312,500" sub="Q1 2026 · Apr 15" />
       </div>

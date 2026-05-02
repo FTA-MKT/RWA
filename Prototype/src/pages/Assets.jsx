@@ -86,6 +86,7 @@ function AssetDetail({ navigate }) {
               ['Distribution Type', ASSET.financial.distributionType],
               ['Distribution Frequency', ASSET.financial.distributionFrequency],
               ['Target IRR', ASSET.financial.targetIRR],
+              ['Allow Partial Trade', ASSET.financial.allowPartialTrade],
             ].map(([label, value]) => (
               <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <div style={{ fontSize: 11.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 0.7 }}>{label}</div>

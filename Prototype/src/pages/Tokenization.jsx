@@ -293,6 +293,7 @@ export default function Tokenization({ navigate }) {
             <Field label="Blockchain"      value={TOKEN.blockchain} />
             <Field label="Contract Address" value={TOKEN.contractAddress} mono />
             <Field label="Unit Price"      value="$1,000.00" mono />
+            <Field label="Decimals"        value="2" mono />
           </div>
         </Card>
 

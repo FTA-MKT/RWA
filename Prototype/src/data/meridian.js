@@ -31,6 +31,7 @@ export const ASSET = {
     distributionType: 'Cash Flow (Net Operating Income)',
     distributionFrequency: 'Quarterly',
     targetIRR: '12–15%',
+    allowPartialTrade: 'Yes — up to 2 decimal places',
   },
   documents: [
     { name: 'Operating Agreement.pdf', date: 'Executed Jan 2026' },
@@ -88,7 +89,7 @@ export const TOKEN = {
   contractAddress: '0x7B2E...c94A',
   totalSupply: 50000,
   unitPrice: 1000,
-  minted: 38000,
+  minted: 38000.5,
   remaining: 12000,
   burned: 0,
   status: 'Active',
@@ -327,7 +328,7 @@ export const SUBSCRIPTIONS = [
   { id: 'clearwater', investor: 'Clearwater Trust', commitment: 1000000, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 1000, mintStatus: 'Minted', signedDate: 'Feb 19, 2026', fundsDate: 'Feb 26, 2026', escrowDate: 'March 1, 2026', mintDate: 'March 5, 2026', wireDate: 'Feb 18, 2026' },
   { id: 'delta-growth', investor: 'Delta Growth Fund', commitment: 1250000, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 1250, mintStatus: 'Minted', signedDate: 'Feb 23, 2026', fundsDate: 'Mar 2, 2026', escrowDate: 'March 5, 2026', mintDate: 'March 5, 2026', wireDate: 'Feb 22, 2026' },
   { id: 'pinnacle', investor: 'Pinnacle Holdings', commitment: 750000, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 750, mintStatus: 'Minted', signedDate: 'Feb 25, 2026', fundsDate: 'Mar 4, 2026', escrowDate: 'March 7, 2026', mintDate: 'March 5, 2026', wireDate: 'Feb 24, 2026' },
-  { id: 'lakefront', investor: 'Lakefront Partners', commitment: 1150000, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 1150, mintStatus: 'Minted', signedDate: 'Feb 24, 2026', fundsDate: 'Mar 3, 2026', escrowDate: 'March 6, 2026', mintDate: 'March 5, 2026', wireDate: 'Feb 23, 2026' },
+  { id: 'lakefront', investor: 'Lakefront Partners', commitment: 1150500, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 1150.5, mintStatus: 'Minted', signedDate: 'Feb 24, 2026', fundsDate: 'Mar 3, 2026', escrowDate: 'March 6, 2026', mintDate: 'March 5, 2026', wireDate: 'Feb 23, 2026' },
   { id: 'meridian-gp', investor: 'Meridian GP', commitment: 1500000, paymentMethod: 'Wire', signature: 'Signed', funding: 'Funded', units: 1500, mintStatus: 'Minted', signedDate: 'Jan 20, 2026', fundsDate: 'Jan 25, 2026', escrowDate: 'Jan 28, 2026', mintDate: 'March 1, 2026', wireDate: 'Jan 22, 2026' },
   { id: 'crescent-bay', investor: 'Crescent Bay Holdings', commitment: 250000, paymentMethod: 'ACH', signature: 'Signed', funding: 'Pending', units: 250, mintStatus: 'Pending', signedDate: 'Mar 1, 2026', fundsDate: '—', escrowDate: '—', mintDate: '—', wireDate: '—' },
 ];
@@ -342,7 +343,7 @@ export const HOLDERS = [
   { id: 'clearwater', name: 'Clearwater Trust', wallet: '0x5a9F...d88A', units: 1000, ownership: '2.00%', costBasis: 1000000, lockupExpiry: 'Mar 5, 2027', transferEligible: false },
   { id: 'delta-growth', name: 'Delta Growth Fund', wallet: '0x7c1A...e99D', units: 1250, ownership: '2.50%', costBasis: 1250000, lockupExpiry: 'Mar 5, 2027', transferEligible: false },
   { id: 'pinnacle', name: 'Pinnacle Holdings', wallet: '0x3f8B...b10C', units: 750, ownership: '1.50%', costBasis: 750000, lockupExpiry: 'Mar 5, 2027', transferEligible: false },
-  { id: 'lakefront', name: 'Lakefront Partners', wallet: '0x1d4D...c21E', units: 1150, ownership: '2.30%', costBasis: 1150000, lockupExpiry: 'Mar 5, 2027', transferEligible: false },
+  { id: 'lakefront', name: 'Lakefront Partners', wallet: '0x1d4D...c21E', units: 1150.5, ownership: '2.30%', costBasis: 1150500, lockupExpiry: 'Mar 5, 2027', transferEligible: false },
   { id: 'meridian-gp', name: 'Meridian GP', wallet: '0x9a2C...f32A', units: 1500, ownership: '3.00%', costBasis: 1500000, lockupExpiry: '—', transferEligible: true },
 ];
 
@@ -371,7 +372,7 @@ export const DISTRIBUTIONS = [
       { investor: 'Clearwater Trust',         units: 1000, ownership: '2.00%', gross: 6250.00,   withholding: 0, net: 6250.00,   method: 'Wire', status: 'Paid' },
       { investor: 'Delta Growth Fund',        units: 1250, ownership: '2.50%', gross: 7812.50,   withholding: 0, net: 7812.50,   method: 'Wire', status: 'Paid' },
       { investor: 'Pinnacle Holdings',        units: 750,  ownership: '1.50%', gross: 4687.50,   withholding: 0, net: 4687.50,   method: 'Wire', status: 'Paid' },
-      { investor: 'Lakefront Partners',       units: 1150, ownership: '2.30%', gross: 7187.50,   withholding: 0, net: 7187.50,   method: 'Wire', status: 'Paid' },
+      { investor: 'Lakefront Partners',       units: 1150.5, ownership: '2.30%', gross: 7190.63,   withholding: 0, net: 7190.63,   method: 'Wire', status: 'Paid' },
     ],
   },
   {

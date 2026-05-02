@@ -256,8 +256,6 @@ export default function Tokenization({ navigate }) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Pill tone="teal" dot>Active</Pill>
-            <Btn variant="danger" icon={<I.lock size={13} />} onClick={() => setShowPause(true)}>Pause Contract</Btn>
-            <Btn variant="teal" icon={<I.bolt size={13} />} onClick={() => setShowMint(true)}>Mint Tokens</Btn>
           </div>
         </div>
 

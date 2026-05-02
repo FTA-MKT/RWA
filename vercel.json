@@ -1,7 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "cd Prototype && npm install && npm run build",
   "outputDirectory": "Prototype/dist",
-  "installCommand": "npm install",
-  "framework": "vite",
-  "rootDirectory": "Prototype"
+  "framework": "vite"
 }

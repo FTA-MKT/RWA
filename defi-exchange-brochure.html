@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeFi Exchange — Real-World Asset Tokenization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:           oklch(14% 0.024 262);
+      --ink-mid:       oklch(32% 0.038 262);
+      --ink-muted:     oklch(50% 0.035 262);
+      --ink-faint:     oklch(67% 0.025 262);
+      --paper:         oklch(97% 0.007 82);
+      --paper-warm:    oklch(94% 0.013 82);
+      --paper-mid:     oklch(91% 0.016 82);
+      --deep:          oklch(19% 0.042 265);
+      --deep-mid:      oklch(24% 0.040 265);
+      --deep-surface:  oklch(27% 0.036 265);
+      --deep-raise:    oklch(30% 0.034 265);
+      --brass:         oklch(60% 0.140 52);
+      --brass-light:   oklch(74% 0.110 52);
+      --brass-pale:    oklch(88% 0.058 52);
+      --rule:          oklch(83% 0.012 262);
+      --rule-warm:     oklch(80% 0.016 82);
+      --rule-deep:     oklch(30% 0.036 265);
+      --white:         oklch(98% 0.004 82);
+      --white-dim:     oklch(88% 0.010 262);
+      --white-muted:   oklch(72% 0.018 262);
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      font-optical-sizing: auto;
+    }
+
+    /* ---- UTILITIES ---- */
+
+    .eyebrow {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .eyebrow--dim  { color: var(--ink-muted); }
+    .eyebrow--pale { color: var(--brass-light); }
+
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 clamp(1.75rem, 5vw, 5rem);
+    }
+
+    /* ---- COVER ---- */
+
+    .cover {
+      background: var(--deep);
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 6vw, 6rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ledger-register grid motif */
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent calc(4.5rem - 1px),
+          oklch(32% 0.040 265 / 0.30) calc(4.5rem - 1px),
+          oklch(32% 0.040 265 / 0.30) 4.5rem
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent calc(4.5rem - 1px),
+          oklch(32% 0.040 265 / 0.12) calc(4.5rem - 1px),
+          oklch(32% 0.040 265 / 0.12) 4.5rem
+        );
+      pointer-events: none;
+    }
+
+    /* Warm glow anchored bottom-right */
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      right: -5%;
+      width: 55%;
+      height: 70%;
+      background: radial-gradient(
+        ellipse at center,
+        oklch(60% 0.14 52 / 0.08) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-wordmark {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .cover-draft-badge {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: oklch(42% 0.030 262);
+      padding: 0.35rem 0.75rem;
+      border: 1px solid oklch(30% 0.036 265);
+    }
+
+    .cover-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .cover-kicker {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brass-light);
+      margin-bottom: 2rem;
+    }
+
+    .cover-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      text-wrap: balance;
+      margin-bottom: 2rem;
+    }
+
+    .cover-subtitle {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--white-muted);
+      max-width: 540px;
+    }
+
+    .cover-footer {
+      position: relative;
+      z-index: 1;
+      padding-top: 2.5rem;
+      border-top: 1px solid oklch(28% 0.036 265);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .cover-meta {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.72rem;
+      color: oklch(45% 0.030 262);
+      line-height: 1.6;
+    }
+
+    .cover-meta-label {
+      font-weight: 600;
+      color: oklch(58% 0.030 262);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .cover-nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .cover-nav-item {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: oklch(38% 0.030 262);
+    }
+
+    .cover-nav-item span {
+      display: block;
+      font-size: 0.62rem;
+      color: oklch(30% 0.025 262);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.15rem;
+    }
+
+    /* ---- EXECUTIVE SUMMARY ---- */
+
+    .exec {
+      background: var(--paper);
+      padding: clamp(4rem, 8vw, 7rem) 0;
+    }
+
+    .exec-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    @media (max-width: 780px) {
+      .exec-grid { grid-template-columns: 1fr; }
+    }
+
+    .exec-eyebrow { margin-bottom: 1.2rem; }
+
+    .exec-heading {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      text-wrap: balance;
+      margin-bottom: 2rem;
+    }
+
+    .exec-body p + p { margin-top: 1.1rem; }
+
+    .exec-sidebar {
+      background: var(--paper-warm);
+      padding: 2.5rem;
+    }
+
+    .exec-sidebar-label {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+    }
+
+    .exec-item {
+      padding: 1.25rem 0;
+    }
+
+    .exec-item + .exec-item { border-top: 1px solid var(--rule-warm); }
+
+    .exec-item-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+
+    .exec-item-body {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--ink-mid);
+    }
+
+    /* ---- SECTION FRAME ---- */
+
+    .section {
+      padding: clamp(4rem, 8vw, 7rem) 0;
+    }
+
+    .section--light   { background: var(--paper); }
+    .section--warm    { background: var(--paper-warm); }
+    .section--deep    { background: var(--deep); }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: flex-start;
+      margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .section-num {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: clamp(4.5rem, 9vw, 8rem);
+      font-weight: 800;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      opacity: 0.07;
+      user-select: none;
+      flex-shrink: 0;
+      margin-top: 0.1em;
+    }
+
+    .section-num--light { color: var(--white); }
+
+    .section-head-text { padding-top: 0.3rem; }
+
+    .section-head-eyebrow { margin-bottom: 0.7rem; }
+
+    .section-head-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: clamp(1.65rem, 3.2vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .section-head-title--light { color: var(--white); }
+
+    .section-head-sub {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.98rem;
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-top: 0.65rem;
+      line-height: 1.55;
+    }
+
+    .section-head-sub--light { color: var(--white-muted); }
+
+    /* ---- SECTION 01: THE CEILING ---- */
+
+    .ceiling-lead {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.05rem, 1.6vw, 1.18rem);
+      line-height: 1.78;
+      color: var(--ink-mid);
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    .ceiling-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--rule);
+    }
+
+    @media (max-width: 620px) {
+      .ceiling-grid { grid-template-columns: 1fr; }
+    }
+
+    .ceiling-cell {
+      padding: 2.25rem 2.5rem;
+    }
+
+    .ceiling-cell:nth-child(4n+1),
+    .ceiling-cell:nth-child(4n+4) { background: var(--paper); }
+    .ceiling-cell:nth-child(4n+2),
+    .ceiling-cell:nth-child(4n+3) { background: var(--paper-warm); }
+
+    .ceiling-cell-id {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 0.75rem;
+    }
+
+    .ceiling-cell-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 0.65rem;
+    }
+
+    .ceiling-cell-body {
+      font-size: 0.9rem;
+      line-height: 1.68;
+      color: var(--ink-mid);
+    }
+
+    .ceiling-pull {
+      margin-top: 3rem;
+      padding: 2.5rem 0;
+      display: grid;
+      grid-template-columns: 2px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .ceiling-pull-bar {
+      background: var(--brass);
+      align-self: stretch;
+    }
+
+    .ceiling-pull-text {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .ceiling-pull-source {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-top: 0.9rem;
+    }
+
+    /* ---- SECTION 02: TOKENIZATION ---- */
+
+    .token-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--rule-deep);
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 620px) {
+      .token-compare { grid-template-columns: 1fr; }
+    }
+
+    .token-col {
+      padding: 2.5rem;
+      background: var(--deep-surface);
+    }
+
+    .token-col-label {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.1rem;
+    }
+
+    .token-col-head {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--white);
+      margin-bottom: 0.9rem;
+    }
+
+    .token-col-body {
+      font-size: 0.9rem;
+      line-height: 1.68;
+      color: var(--white-muted);
+    }
+
+    .token-contract {
+      background: var(--deep-raise);
+      padding: 2.5rem;
+    }
+
+    .token-contract-label {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass-light);
+      margin-bottom: 1.2rem;
+    }
+
+    .token-contract-body {
+      font-size: 0.92rem;
+      line-height: 1.72;
+      color: var(--white-muted);
+    }
+
+    .token-contract-body p + p { margin-top: 1rem; }
+
+    .token-resolution {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--rule-deep);
+    }
+
+    .token-resolution-label {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .token-resolution-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--rule-deep);
+    }
+
+    @media (max-width: 620px) {
+      .token-resolution-list { grid-template-columns: 1fr; }
+    }
+
+    .token-res-item {
+      padding: 1.75rem 2rem;
+      background: var(--deep-surface);
+    }
+
+    .token-res-item-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .token-res-item-body {
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: var(--white-muted);
+    }
+
+    /* ---- SECTION 03: PLATFORM ---- */
+
+    .platform-lead {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.05rem, 1.6vw, 1.18rem);
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--ink-mid);
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--rule);
+    }
+
+    @media (max-width: 620px) {
+      .platform-grid { grid-template-columns: 1fr; }
+    }
+
+    .platform-cell {
+      padding: 2.25rem 2.5rem;
+    }
+
+    .platform-cell:nth-child(4n+1),
+    .platform-cell:nth-child(4n+4) { background: var(--paper); }
+    .platform-cell:nth-child(4n+2),
+    .platform-cell:nth-child(4n+3) { background: var(--paper-warm); }
+
+    .platform-cell-id {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 0.7rem;
+    }
+
+    .platform-cell-title {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.96rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 0.65rem;
+    }
+
+    .platform-cell-body {
+      font-size: 0.88rem;
+      line-height: 1.68;
+      color: var(--ink-mid);
+    }
+
+    .platform-statement {
+      margin-top: 2px;
+      padding: 2.75rem 2.5rem;
+      background: var(--ink);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (max-width: 620px) {
+      .platform-statement { grid-template-columns: 1fr; }
+    }
+
+    .platform-statement-body {
+      font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+      line-height: 1.65;
+      color: oklch(82% 0.012 262);
+    }
+
+    .platform-statement-attr {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--brass-light);
+      white-space: nowrap;
+    }
+
+    /* ---- SECTION 04: THE STACK ---- */
+
+    .stack-lead {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.05rem, 1.6vw, 1.18rem);
+      line-height: 1.78;
+      color: var(--ink-mid);
+      max-width: 720px;
+      margin-bottom: 3rem;
+    }
+
+    .stack-table {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--rule);
+    }
+
+    .stack-row {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2px;
+      background: var(--rule);
+    }
+
+    @media (max-width: 640px) {
+      .stack-row { grid-template-columns: 1fr; }
+    }
+
+    .stack-row:nth-child(1) .stack-identity { background: var(--deep); }
+    .stack-row:nth-child(2) .stack-identity { background: var(--deep-mid); }
+    .stack-row:nth-child(3) .stack-identity { background: oklch(22% 0.040 265); }
+
+    .stack-row:nth-child(1) .stack-detail { background: oklch(96% 0.008 82); }
+    .stack-row:nth-child(2) .stack-detail { background: oklch(94% 0.013 82); }
+    .stack-row:nth-child(3) .stack-detail { background: oklch(91% 0.016 82); }
+
+    .stack-identity {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stack-component-name {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--brass);
+      letter-spacing: 0.01em;
+      margin-bottom: 0.4rem;
+    }
+
+    .stack-component-role {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: oklch(50% 0.032 262);
+    }
+
+    .stack-detail {
+      padding: 2.5rem;
+    }
+
+    .stack-detail-body {
+      font-size: 0.9rem;
+      line-height: 1.72;
+      color: var(--ink-mid);
+    }
+
+    .stack-synthesis {
+      padding: 2.75rem 2.5rem;
+      background: var(--paper-mid);
+    }
+
+    .stack-synthesis-body {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.05rem, 1.6vw, 1.18rem);
+      font-style: italic;
+      line-height: 1.65;
+      color: var(--ink);
+      max-width: 820px;
+    }
+
+    /* ---- FOOTER ---- */
+
+    .footer {
+      background: var(--deep);
+      padding: clamp(3rem, 5vw, 4.5rem) 0;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: clamp(2.5rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .footer-brand-name {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 0.35rem;
+    }
+
+    .footer-brand-sub {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.68rem;
+      color: oklch(40% 0.028 262);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-disclaimer {
+      font-family: 'Sora', system-ui, sans-serif;
+      font-size: 0.72rem;
+      line-height: 1.68;
+      color: oklch(40% 0.028 262);
+    }
+
+    /* ---- PRINT ---- */
+
+    @media print {
+      .cover { min-height: 100vh; page-break-after: always; }
+      .section, .exec { page-break-inside: avoid; }
+    }
+
+    /* ---- RESPONSIVE FINE-TUNE ---- */
+
+    @media (max-width: 480px) {
+      .ceiling-pull { grid-template-columns: 1fr; }
+      .ceiling-pull-bar { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ==============================
+       COVER
+  ============================== -->
+  <section class="cover" aria-label="Cover">
+    <div class="cover-top">
+      <div class="cover-wordmark">DeFi Exchange</div>
+      <div class="cover-draft-badge">Discussion Draft</div>
+    </div>
+
+    <div class="cover-body">
+      <div class="cover-kicker">FTA Global</div>
+      <h1 class="cover-title">Real-World<br>Asset<br>Tokenization</h1>
+      <p class="cover-subtitle">An Institutional Operating Model for Real Estate</p>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-meta">
+        <span class="cover-meta-label">Platform Stack</span>
+        DeFi Exchange &nbsp;+&nbsp; ModernRails &nbsp;+&nbsp; ACTC
+      </div>
+      <nav class="cover-nav" aria-label="Document sections">
+        <div class="cover-nav-item"><span>01</span>The Ceiling</div>
+        <div class="cover-nav-item"><span>02</span>Tokenization</div>
+        <div class="cover-nav-item"><span>03</span>The Platform</div>
+        <div class="cover-nav-item"><span>04</span>The Stack</div>
+      </nav>
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       EXECUTIVE SUMMARY
+  ============================== -->
+  <section class="exec">
+    <div class="container">
+      <div class="exec-grid">
+        <div>
+          <div class="eyebrow exec-eyebrow">Executive Summary</div>
+          <h2 class="exec-heading">The ceiling is an infrastructure problem. Tokenization is how you raise it.</h2>
+          <div class="exec-body">
+            <p>Every real estate sponsor eventually hits the same ceiling. The investor base is limited to relationships that can write large enough checks to justify the manual overhead of managing them. The offering locks capital in until disposition with nothing to offer investors in between. And when institutional capital comes asking, the back office behind the deal rarely matches the quality of the asset in front of it.</p>
+            <p>Tokenization changes that equation. By recording real estate ownership as digital units on a blockchain-based register, sponsors can bring in a broader range of investors without adding proportional overhead, give existing investors a more transparent ownership experience, and present institutional counterparties with infrastructure that signals the operation is serious.</p>
+            <p>DeFi Exchange is the platform that makes this model work in practice. Behind it, ModernRails moves the capital and ACTC provides the trust and custody foundation that institutional counterparties require.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="exec-sidebar">
+            <div class="exec-sidebar-label">What This Document Covers</div>
+            <div class="exec-item">
+              <div class="exec-item-title">Why the model matters</div>
+              <div class="exec-item-body">The coordination problem every real estate sponsor faces, and how tokenization addresses it structurally.</div>
+            </div>
+            <div class="exec-item">
+              <div class="exec-item-title">How tokenization works</div>
+              <div class="exec-item-body">From manual, disconnected operations to a single authoritative ownership register at the center of the capital structure.</div>
+            </div>
+            <div class="exec-item">
+              <div class="exec-item-title">How the platform operates</div>
+              <div class="exec-item-body">Issuance, investor onboarding, compliance, distributions, and reporting through DeFi Exchange.</div>
+            </div>
+            <div class="exec-item">
+              <div class="exec-item-title">The institutional stack</div>
+              <div class="exec-item-body">How DeFi Exchange, ModernRails, and ACTC connect to form a complete operating model that institutional counterparties recognize.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       SECTION 01: THE CEILING
+  ============================== -->
+  <section class="section section--light">
+    <div class="container">
+
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">01</div>
+        <div class="section-head-text">
+          <div class="eyebrow section-head-eyebrow">The Problem</div>
+          <h2 class="section-head-title">The Ceiling Every Sponsor Hits</h2>
+          <p class="section-head-sub">Capital Access, Investor Experience, and the Infrastructure Gap</p>
+        </div>
+      </div>
+
+      <p class="ceiling-lead">Private real estate has always rewarded sponsors who can access capital efficiently and manage investor relationships well. Sponsors who scale do so on the strength of their capital infrastructure, not just their assets.</p>
+
+      <div class="ceiling-grid" role="list">
+        <div class="ceiling-cell" role="listitem">
+          <div class="ceiling-cell-id">Problem 01</div>
+          <div class="ceiling-cell-title">The $250,000 Minimum Is an Infrastructure Tax</div>
+          <p class="ceiling-cell-body">A $250,000 minimum is not a statement about asset quality. It reflects the manual overhead of onboarding, managing, and reporting to each investor. When subscriptions are collected by hand, ownership is tracked in a spreadsheet, and distributions are calculated by a fund administrator from assembled records, the cost of managing a small-check investor is nearly identical to managing a large one. The minimum exists to make the math work, not because smaller checks are less desirable.</p>
+        </div>
+
+        <div class="ceiling-cell" role="listitem">
+          <div class="ceiling-cell-id">Problem 02</div>
+          <div class="ceiling-cell-title">The Investor Experience Is No Longer Competitive</div>
+          <p class="ceiling-cell-body">Capital goes in at closing and comes back at disposition, with a quarterly distribution and an annual K-1 in between. For a family office or high-net-worth investor comparing private real estate to other alternatives, holding an illiquid, opaque position with limited reporting and no path to exit is increasingly a reason to look elsewhere.</p>
+        </div>
+
+        <div class="ceiling-cell" role="listitem">
+          <div class="ceiling-cell-id">Problem 03</div>
+          <div class="ceiling-cell-title">The Infrastructure Gap Loses Institutional Capital</div>
+          <p class="ceiling-cell-body">When institutional capital enters, a different problem surfaces. A family office or endowment conducting due diligence is looking not just at the asset but at how ownership is structured, recorded, and serviced. A cap table in a spreadsheet and a fund admin doing manual reconciliations signal that the operation behind the deal does not match the ambition of the sponsor presenting it.</p>
+        </div>
+
+        <div class="ceiling-cell" role="listitem">
+          <div class="ceiling-cell-id">The Diagnosis</div>
+          <div class="ceiling-cell-title">It Is a Coordination Problem, Not an Asset Problem</div>
+          <p class="ceiling-cell-body">The asset, the legal structure, and the economics stay the same. What tokenization changes is the operational model through which ownership is issued, recorded, and serviced. The ceiling is a coordination problem, and that is what the model is designed to address.</p>
+        </div>
+      </div>
+
+      <div class="ceiling-pull" aria-label="Key insight">
+        <div class="ceiling-pull-bar" aria-hidden="true"></div>
+        <div>
+          <p class="ceiling-pull-text">The minimum exists to make the math work, not because smaller checks are less desirable.</p>
+          <div class="ceiling-pull-source">Section 01 — The Ceiling</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       SECTION 02: WHAT TOKENIZATION CHANGES
+  ============================== -->
+  <section class="section section--deep">
+    <div class="container">
+
+      <div class="section-head">
+        <div class="section-num section-num--light" aria-hidden="true">02</div>
+        <div class="section-head-text">
+          <div class="eyebrow eyebrow--pale section-head-eyebrow">The Model</div>
+          <h2 class="section-head-title section-head-title--light">What Tokenization Changes</h2>
+          <p class="section-head-sub section-head-sub--light">The Same Ownership Model, on Better Infrastructure</p>
+        </div>
+      </div>
+
+      <div class="token-compare" role="region" aria-label="Traditional vs. tokenized comparison">
+        <div class="token-col">
+          <div class="token-col-label">Traditional Offering</div>
+          <div class="token-col-head">Disconnected Functions, Manual Reconciliation</div>
+          <p class="token-col-body">Ownership units are defined in a partnership agreement and tracked by a fund administrator in a separate system. That system does not connect directly to the compliance process, the escrow account, or the distribution bank account. Every function works independently, and every handoff between them creates reconciliation work.</p>
+        </div>
+        <div class="token-col">
+          <div class="token-col-label">Tokenized Structure</div>
+          <div class="token-col-head">One Authoritative Register at the Center</div>
+          <p class="token-col-body">Ownership units are recorded on a blockchain-based register at the center of the capital structure. That register is the same record used to verify transfer eligibility, calculate distributions, run compliance checks, and produce investor reports. Every event is recorded against it automatically. Previously disconnected functions now draw from a single authoritative source.</p>
+        </div>
+      </div>
+
+      <div class="token-contract" role="region" aria-label="Smart contract explainer">
+        <div class="token-contract-label">The Smart Contract</div>
+        <div class="token-contract-body">
+          <p>A smart contract is a program that runs on a blockchain network and executes rules automatically. In a real estate tokenization, the smart contract governs who may hold units and under what conditions transfers are permitted. When an investor attempts to transfer units to another wallet, the contract checks whether the receiving investor is verified and eligible. If the conditions are met, the transfer executes. If they are not, it does not. The compliance check is built into the transfer itself, without manual review.</p>
+          <p>The same contract records the holding period required by securities law, enforces jurisdiction restrictions, and provides a timestamped record of every transaction since issuance that cannot be altered.</p>
+          <p>The boundaries are as important as the capabilities. The smart contract does not replace the operating agreement that governs investor rights. Running the LLC that holds the property, making asset management decisions, and producing tax documents are all functions carried by the human and institutional participants in the deal. The smart contract is the recordkeeping and compliance enforcement layer: one component of a complete operating model.</p>
+        </div>
+      </div>
+
+      <div class="token-resolution">
+        <div class="token-resolution-label">What Resolves When These Components Work Together</div>
+        <div class="token-resolution-list" role="list">
+          <div class="token-res-item" role="listitem">
+            <div class="token-res-item-title">Lower minimums become viable</div>
+            <p class="token-res-item-body">The per-investor operational cost is no longer driven by manual overhead. The minimum threshold is an infrastructure constraint, and the infrastructure has changed.</p>
+          </div>
+          <div class="token-res-item" role="listitem">
+            <div class="token-res-item-title">The investor experience improves</div>
+            <p class="token-res-item-body">Ownership is transparent, and distributions run automatically from the same register that tracks who owns what. Investors are not waiting on assembled records.</p>
+          </div>
+          <div class="token-res-item" role="listitem">
+            <div class="token-res-item-title">The infrastructure gap closes</div>
+            <p class="token-res-item-body">The compliance framework and audit trail are built into the structure from issuance, not assembled for due diligence after the fact. Institutional counterparties see the work already done.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       SECTION 03: THE PLATFORM
+  ============================== -->
+  <section class="section section--warm">
+    <div class="container">
+
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">03</div>
+        <div class="section-head-text">
+          <div class="eyebrow section-head-eyebrow">The Platform</div>
+          <h2 class="section-head-title">What DeFi Exchange Provides</h2>
+          <p class="section-head-sub">The Operating Layer for Tokenized Real Estate</p>
+        </div>
+      </div>
+
+      <p class="platform-lead">A platform built on this model has a specific set of things it needs to do well: configure and issue digital ownership units, onboard and verify investors, connect the ownership record to a compliant payment process, maintain the register over the life of the asset, and run distributions from it. All of this has to work within the regulatory framework governing U.S. private securities offerings.</p>
+
+      <div class="platform-grid" role="list">
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Issuance</div>
+          <div class="platform-cell-title">Asset Record and Smart Contract Deployment</div>
+          <p class="platform-cell-body">The asset record holds the property profile, SPV information, offering documents, valuation, and tokenization parameters: total unit supply, unit price, transfer restriction conditions, eligibility requirements, and issuance workflow. The smart contract is deployed against those parameters.</p>
+        </div>
+
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Onboarding</div>
+          <div class="platform-cell-title">Investor Verification and Accreditation</div>
+          <p class="platform-cell-body">Identity verification and accreditation confirmation are handled by integrated third-party providers. Once verified, an investor's wallet is added to the allowlist. Subscription agreements are executed electronically, funds move to escrow, and at closing, tokens are issued directly to each investor's wallet while the ownership register updates simultaneously.</p>
+        </div>
+
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Compliance</div>
+          <div class="platform-cell-title">Regulation D Workflows and Transfer Restrictions</div>
+          <p class="platform-cell-body">The platform supports accredited investor verification, transfer restriction enforcement, subscription documentation, and SEC notice filings under the offering structure selected with legal counsel. DeFi Exchange operationalizes the compliance rules, approval workflows, wallet restrictions, and ownership records associated with that structure.</p>
+        </div>
+
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Registry</div>
+          <div class="platform-cell-title">Continuous Ownership Record and Audit Trail</div>
+          <p class="platform-cell-body">After issuance, the platform maintains a continuous ownership register: every unit holder, wallet address, ownership percentage, compliance status, and transaction history, with every event logged through a timestamped audit trail that cannot be modified.</p>
+        </div>
+
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Distributions</div>
+          <div class="platform-cell-title">Automated Payments Across Fiat and Stablecoin</div>
+          <p class="platform-cell-body">Distributions are calculated from a snapshot of the ownership register at the record date and paid by wire or ACH to U.S. investors and by stablecoin to international wallets where applicable. Year-end tax documents are produced by the fund administrator from the same record.</p>
+        </div>
+
+        <div class="platform-cell" role="listitem">
+          <div class="platform-cell-id">Scope</div>
+          <div class="platform-cell-title">Infrastructure, Not Marketplace</div>
+          <p class="platform-cell-body">DeFi Exchange is not a marketplace and does not provide investment advice. It is the operational infrastructure through which a tokenized real estate offering is structured, issued, and serviced.</p>
+        </div>
+      </div>
+
+      <div class="platform-statement" role="region" aria-label="Platform summary">
+        <p class="platform-statement-body">DeFi Exchange is the platform that makes this model work in practice. Behind it, ModernRails moves the capital and ACTC provides the trust and custody foundation that institutional counterparties require.</p>
+        <div class="platform-statement-attr">Executive Summary</div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       SECTION 04: THE STACK
+  ============================== -->
+  <section class="section section--light">
+    <div class="container">
+
+      <div class="section-head">
+        <div class="section-num" aria-hidden="true">04</div>
+        <div class="section-head-text">
+          <div class="eyebrow section-head-eyebrow">The Stack</div>
+          <h2 class="section-head-title">The Institutional Stack Behind the Platform</h2>
+          <p class="section-head-sub">Three Components That Complete the Model</p>
+        </div>
+      </div>
+
+      <p class="stack-lead">DeFi Exchange manages the ownership record and the operational lifecycle of the offering. Two things it does not do on its own are move capital and hold assets under a recognized fiduciary framework. Both functions require dedicated institutional counterparties, and both matter to the sophisticated investors and counterparties the model is designed to attract.</p>
+
+      <div class="stack-table" role="table" aria-label="Institutional stack components">
+
+        <div class="stack-row" role="row">
+          <div class="stack-identity" role="rowheader">
+            <div class="stack-component-name">DeFi Exchange</div>
+            <div class="stack-component-role">Ownership Register + Operations</div>
+          </div>
+          <div class="stack-detail" role="cell">
+            <p class="stack-detail-body">The ownership record at the center of the capital structure. Manages the operational lifecycle of the offering: issuance, investor onboarding, compliance enforcement, continuous register maintenance, distribution calculation, and reporting. Every other component in the stack connects back to this record.</p>
+          </div>
+        </div>
+
+        <div class="stack-row" role="row">
+          <div class="stack-identity" role="rowheader">
+            <div class="stack-component-name">ModernRails</div>
+            <div class="stack-component-role">Capital Movement</div>
+          </div>
+          <div class="stack-detail" role="cell">
+            <p class="stack-detail-body">Handles all money movement: subscription funding from escrow to the SPV, distribution payments to investors, redemption proceeds, and cross-border settlement. It supports both fiat rails for wire and ACH and stablecoin pathways for international distribution flows. When the ownership register records a distribution event and calculates each investor's allocation, ModernRails executes the payments against that calculation. The ownership event and the payment event run on connected infrastructure, so one automatically triggers the other.</p>
+          </div>
+        </div>
+
+        <div class="stack-row" role="row">
+          <div class="stack-identity" role="rowheader">
+            <div class="stack-component-name">ACTC</div>
+            <div class="stack-component-role">Trust, Custody + Fiduciary</div>
+          </div>
+          <div class="stack-detail" role="cell">
+            <p class="stack-detail-body">Provides the trust, custody, and fiduciary foundation. Serious institutional offerings require a recognized custody, trust, or fiduciary framework that counterparties and regulators expect. ACTC is positioned to provide that foundation where applicable: custody of the underlying asset interests, fiduciary oversight of the vehicle, and the institutional control framework that signals to sophisticated counterparties that the offering is structured at that level.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="stack-synthesis">
+        <p class="stack-synthesis-body">A sponsor presenting this combination is presenting an operating model, not a technology experiment. DeFi Exchange makes the ownership record the center of the capital structure. ModernRails ensures capital moves reliably against it. ACTC provides the custodial anchor that makes the structure credible. Each component does a specific job, and the value is in how they connect.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand-name">DeFi Exchange</div>
+          <div class="footer-brand-sub">A product of FTA Global</div>
+        </div>
+        <p class="footer-disclaimer">
+          This document is for discussion purposes only and does not constitute an offer to sell or a solicitation to purchase any security. Offering structures, legal documentation, and regulatory filings are prepared with qualified securities counsel and are not functions of the DeFi Exchange platform alone. In the United States, accredited investor status may apply to individuals with income over $200,000 individually ($300,000 with a spouse or partner), or net worth over $1 million excluding the primary residence, as well as certain qualifying entities and financial professionals.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

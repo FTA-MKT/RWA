@@ -8,7 +8,7 @@ function OfferingDetail({ navigate }) {
 
   const tabs = [
     { id: 'structure', label: 'Structure' },
-    { id: 'compliance', label: 'Compliance Config' },
+    { id: 'compliance', label: 'Compliance Checklist' },
     { id: 'payment', label: 'Payment' },
     { id: 'fundraise', label: 'Offering Progress' },
   ];
@@ -82,7 +82,7 @@ function OfferingDetail({ navigate }) {
       )}
 
       {tab === 'compliance' && (
-        <Card title="Compliance Configuration" subtitle="All requirements enforced before subscription acceptance">
+        <Card title="Compliance Checklist" subtitle="All requirements enforced before subscription acceptance">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {OFFERING.compliance.map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '14px 0', borderTop: i > 0 ? '1px solid var(--line)' : 'none' }}>

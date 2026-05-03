@@ -68,7 +68,7 @@ export const OFFERING = {
     { label: 'Form D Filing', detail: 'Filed Feb 15, 2026 (EDGAR)', status: true },
     { label: 'State Notice Filings', detail: 'TX, CA, NY, FL (filed)', status: true },
     { label: 'Legal Counsel Approval', detail: 'Securities counsel confirmed', status: true },
-    { label: 'OFAC / AML Screening', detail: 'Chainalysis + Jumio — ongoing monitoring for all active investors', status: true },
+    { label: 'OFAC / AML Screening', detail: 'Chainalysis — ongoing monitoring for all active investors', status: true },
     { label: 'Bad Actor Questionnaire', detail: 'Rule 506(d) covered persons: issuer, officers, directors, 20% owners, promoters, placement agents', status: true },
     { label: 'Tax Documentation', detail: 'W-9 (U.S. persons) · W-8BEN (non-U.S. persons)', status: true },
   ],
@@ -427,9 +427,9 @@ export const ACTIVITY = [
   // Feb 14–18, 2026 — KYC & Accreditation
   { who: 'Northstar Family Office',  what: 'Accreditation verified — UniFi (Rule 506(c))',        when: 'Feb 18, 2026', kind: 'kyc',    investorId: 'northstar' },
   { who: 'Northstar Family Office',  what: 'Wallet allowlisted: 0x3a8F...d91C',                                when: 'Feb 17, 2026', kind: 'invest', investorId: 'northstar' },
-  { who: 'Northstar Family Office',  what: 'KYC approved — Jumio',                                             when: 'Feb 16, 2026', kind: 'kyc',    investorId: 'northstar' },
-  { who: 'Summit Ridge Partners',    what: 'KYC approved — Jumio',                                             when: 'Feb 16, 2026', kind: 'kyc',    investorId: 'summit-ridge' },
-  { who: 'Westbrook Capital LP',     what: 'KYC approved — Jumio',                                             when: 'Feb 14, 2026', kind: 'kyc',    investorId: 'westbrook' },
+  { who: 'Northstar Family Office',  what: 'KYC approved — UniFi',                                             when: 'Feb 16, 2026', kind: 'kyc',    investorId: 'northstar' },
+  { who: 'Summit Ridge Partners',    what: 'KYC approved — UniFi',                                             when: 'Feb 16, 2026', kind: 'kyc',    investorId: 'summit-ridge' },
+  { who: 'Westbrook Capital LP',     what: 'KYC approved — UniFi',                                             when: 'Feb 14, 2026', kind: 'kyc',    investorId: 'westbrook' },
   { who: 'Northstar Family Office',  what: 'Investor registered on platform',                                  when: 'Feb 12, 2026', kind: 'invest', investorId: 'northstar' },
 ];
 

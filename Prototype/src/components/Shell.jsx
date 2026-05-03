@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { I } from './Icons';
-import { USER } from '../data/meridian';
 
 const NAV_ITEMS = [
   { id: 'dashboard',        label: 'Dashboard',        icon: I.dashboard },
@@ -12,6 +11,11 @@ const NAV_ITEMS = [
   { id: 'distributions',    label: 'Distributions',    icon: I.distributions },
 ];
 
+const INV_NAV = [
+  { id: 'portfolio',     label: 'Portfolio',     icon: I.assets },
+  { id: 'communication', label: 'Communication', icon: I.bell  },
+];
+
 const DETAIL_PARENT = {
   'asset-detail':        'assets',
   'offering-detail':     'offerings',
@@ -20,58 +24,75 @@ const DETAIL_PARENT = {
   'distribution-detail': 'distributions',
 };
 
-export function Rail({ page, navigate }) {
-  const activeRail = DETAIL_PARENT[page] || page;
+export function Rail({ page, navigate, userContext = 'sponsor' }) {
+  const isInv = userContext === 'investor';
+  const items = isInv ? INV_NAV : NAV_ITEMS;
+  const activeRail = isInv ? page : (DETAIL_PARENT[page] || page);
+  const ACCENT     = isInv ? '#4A7CC7' : 'var(--teal)';
+  const ACTIVE_BG  = isInv ? 'rgba(74,124,199,0.14)' : 'rgba(31,142,142,0.08)';
+  const railBg     = isInv ? '#0F1E3A' : 'var(--rail)';
+  const railInk    = isInv ? 'rgba(255,255,255,0.65)' : 'var(--rail-ink)';
+  const railActive = isInv ? '#fff' : 'var(--rail-ink-active)';
+  const borderClr  = isInv ? 'rgba(255,255,255,0.08)' : 'var(--line)';
+  const labelClr   = isInv ? 'rgba(255,255,255,0.35)' : 'var(--ink)';
 
   return (
     <aside style={{
-      width: 252, background: 'var(--rail)', color: 'var(--rail-ink)',
+      width: 252, background: railBg, color: railInk,
       display: 'flex', flexDirection: 'column', flexShrink: 0,
-      borderRight: '1px solid var(--line)', height: '100vh', overflow: 'hidden',
+      borderRight: `1px solid ${borderClr}`, height: '100vh', overflow: 'hidden',
       position: 'sticky', top: 0,
     }}>
       {/* Logo */}
-      <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--line)', flexShrink: 0 }}>
+      <div style={{ padding: '20px 20px 16px', borderBottom: `1px solid ${borderClr}`, flexShrink: 0 }}>
         <img src="/logo.svg" height="20" alt="DeFi Exchange" style={{ display: 'block' }} />
       </div>
 
-      {/* Issuer Console label */}
-      <div style={{ padding: '10px 20px 4px', flexShrink: 0 }}>
-        <div style={{ fontSize: 13, color: 'var(--ink)', letterSpacing: 0.8, textTransform: 'uppercase', fontWeight: 700 }}>Issuer Console</div>
+      {/* Console label */}
+      <div style={{ padding: '10px 20px 6px', flexShrink: 0 }}>
+        <div style={{ fontSize: 12, color: labelClr, letterSpacing: 0.9, textTransform: 'uppercase', fontWeight: 700 }}>
+          {isInv ? 'Investor Portal' : 'Issuer Console'}
+        </div>
+        {isInv && (
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginTop: 5, lineHeight: 1.45 }}>
+            Northstar Family Office<br />
+            <span style={{ fontSize: 11 }}>100 MMT-01 · Holder</span>
+          </div>
+        )}
       </div>
 
       {/* Nav */}
       <nav style={{ flex: 1, padding: '4px 10px', overflowY: 'auto' }}>
-        {NAV_ITEMS.map(item => {
+        {items.map(item => {
           const active = activeRail === item.id;
           return (
             <button key={item.id} onClick={() => navigate(item.id)}
               style={{
                 width: '100%', display: 'flex', alignItems: 'center', gap: 11,
                 padding: '9px 12px', marginBottom: 2,
-                background: active ? 'rgba(31,142,142,0.08)' : 'transparent',
-                color: active ? 'var(--rail-ink-active)' : 'var(--rail-ink)',
+                background: active ? ACTIVE_BG : 'transparent',
+                color: active ? railActive : railInk,
                 border: 'none', borderRadius: 6, fontSize: 13.5,
                 fontWeight: active ? 600 : 400, textAlign: 'left', position: 'relative',
-                transition: 'background 0.15s, color 0.15s',
+                transition: 'background 0.15s, color 0.15s', cursor: 'pointer',
               }}>
-              {active && <span style={{ position: 'absolute', left: 0, top: 8, bottom: 8, width: 2.5, background: 'var(--teal)', borderRadius: 2 }} />}
+              {active && <span style={{ position: 'absolute', left: 0, top: 8, bottom: 8, width: 2.5, background: ACCENT, borderRadius: 2 }} />}
               <item.icon size={16} />
               <span>{item.label}</span>
+              {item.badge && <span style={{ marginLeft: 'auto', background: 'var(--teal)', color: '#fff', borderRadius: 10, fontSize: 10, fontWeight: 700, padding: '2px 7px', lineHeight: 1.2 }}>+</span>}
             </button>
           );
         })}
       </nav>
 
       {/* Settings */}
-      <div style={{ padding: '8px 10px', borderTop: '1px solid var(--line)', flexShrink: 0 }}>
-        <button
-          style={{
-            width: '100%', display: 'flex', alignItems: 'center', gap: 11,
-            padding: '9px 12px', background: 'transparent',
-            color: 'var(--rail-ink)', border: 'none', borderRadius: 6,
-            fontSize: 13.5, fontWeight: 400, textAlign: 'left',
-          }}>
+      <div style={{ padding: '8px 10px', borderTop: `1px solid ${borderClr}`, flexShrink: 0 }}>
+        <button style={{
+          width: '100%', display: 'flex', alignItems: 'center', gap: 11,
+          padding: '9px 12px', background: 'transparent',
+          color: railInk, border: 'none', borderRadius: 6,
+          fontSize: 13.5, fontWeight: 400, textAlign: 'left', cursor: 'pointer',
+        }}>
           <I.settings size={16} />
           <span>Settings</span>
         </button>
@@ -80,7 +101,17 @@ export function Rail({ page, navigate }) {
   );
 }
 
-export function UserBar({ title }) {
+const SWITCHER_USERS = [
+  { id: 'sponsor',  initials: 'JS', name: 'Jim Smith',       role: 'Issuer Admin',  org: '', view: 'Sponsor Console' },
+  { id: 'investor', initials: 'JW', name: 'James Whitfield', role: 'Investor',      org: '', view: 'Investor Portal' },
+];
+
+export function UserBar({ title, userContext = 'sponsor', onUserSwitch }) {
+  const [open, setOpen] = useState(false);
+  const current = SWITCHER_USERS.find(u => u.id === userContext) || SWITCHER_USERS[0];
+  const avatarBg = userContext === 'investor' ? 'rgba(42,82,160,0.1)' : '#EEF2F7';
+  const avatarClr = userContext === 'investor' ? '#2A52A0' : 'var(--teal-deep)';
+
   return (
     <div style={{
       height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -88,12 +119,49 @@ export function UserBar({ title }) {
       background: 'var(--panel)', position: 'sticky', top: 0, zIndex: 6, flexShrink: 0,
     }}>
       <h1 style={{ margin: 0, fontFamily: 'Fraunces, serif', fontWeight: 500, fontSize: 22, letterSpacing: -0.3, color: 'var(--ink)', lineHeight: 1 }}>{title}</h1>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'default' }}>
-        <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#EEF2F7', color: 'var(--teal-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11.5, fontWeight: 700, flexShrink: 0 }}>{USER.initials}</div>
-        <div style={{ lineHeight: 1.25 }}>
-          <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--ink)', whiteSpace: 'nowrap' }}>{USER.name}</div>
-          <div style={{ fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap' }}>{USER.role}</div>
+      <div style={{ position: 'relative' }}>
+        <div onClick={() => setOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer', userSelect: 'none' }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: avatarBg, color: avatarClr, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11.5, fontWeight: 700, flexShrink: 0 }}>{current.initials}</div>
+          <div style={{ lineHeight: 1.25 }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--ink)', whiteSpace: 'nowrap' }}>{current.name}</div>
+            <div style={{ fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap' }}>{current.role}</div>
+          </div>
+          <span style={{ fontSize: 10, color: 'var(--muted)', marginLeft: 2 }}>▾</span>
         </div>
+        {open && (
+          <>
+            <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 99 }} />
+            <div style={{
+              position: 'absolute', right: 0, top: 'calc(100% + 8px)',
+              background: '#fff', border: '1px solid var(--line)',
+              borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              zIndex: 100, minWidth: 280, overflow: 'hidden',
+            }}>
+              <div style={{ padding: '6px 14px 5px', fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 600, borderBottom: '1px solid var(--line)' }}>
+                Switch View
+              </div>
+              {SWITCHER_USERS.map(u => (
+                <button key={u.id} onClick={() => { onUserSwitch?.(u.id); setOpen(false); }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12, width: '100%',
+                    padding: '11px 14px', textAlign: 'left', cursor: 'pointer',
+                    background: userContext === u.id ? 'var(--bg)' : '#fff',
+                    border: 'none', borderBottom: '1px solid var(--line)',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
+                  onMouseLeave={e => e.currentTarget.style.background = userContext === u.id ? 'var(--bg)' : '#fff'}>
+                  <div style={{ width: 34, height: 34, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, background: u.id === 'sponsor' ? '#EEF2F7' : 'rgba(42,82,160,0.1)', color: u.id === 'sponsor' ? 'var(--teal-deep)' : '#2A52A0' }}>{u.initials}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ink)' }}>{u.name}</div>
+                    <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 1 }}>{u.role}</div>
+                    <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>{u.view}</div>
+                  </div>
+                  {userContext === u.id && <I.check size={14} style={{ color: 'var(--teal)', flexShrink: 0 }} />}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import Subscriptions from './pages/Subscriptions';
 import Tokenization from './pages/Tokenization';
 import HoldersRegistry from './pages/HoldersRegistry';
 import Distributions from './pages/Distributions';
+import InvestorPortal from './pages/InvestorPortal';
 
 const PAGE_TITLE = {
   'dashboard':           'Dashboard',
@@ -28,10 +29,18 @@ const PAGE_TITLE = {
   'distribution-detail': 'Q1 2026 Distribution',
 };
 
+const INV_PAGE_TITLE = {
+  'portfolio':     'My Portfolio',
+  'communication': 'Communication',
+};
+
 export default function App() {
+  const [userContext, setUserContext] = useState('sponsor');
   const [route, setRoute] = useState({ page: 'dashboard', params: {} });
+  const [invPage, setInvPage] = useState('portfolio');
 
   const navigate = (page, params = {}) => setRoute({ page, params });
+  const navigateInv = (page) => setInvPage(page);
 
   const renderPage = () => {
     switch (route.page) {
@@ -53,12 +62,22 @@ export default function App() {
     }
   };
 
+  const title = userContext === 'investor'
+    ? INV_PAGE_TITLE[invPage] || 'My Portfolio'
+    : (route.page === 'investor-detail' && route.params.investorName ? route.params.investorName : PAGE_TITLE[route.page] || '');
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Rail page={route.page} navigate={navigate} />
+      <Rail
+        page={userContext === 'investor' ? invPage : route.page}
+        navigate={userContext === 'investor' ? navigateInv : navigate}
+        userContext={userContext}
+      />
       <main style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-        <UserBar title={route.page === 'investor-detail' && route.params.investorName ? route.params.investorName : PAGE_TITLE[route.page] || ''} />
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>{renderPage()}</div>
+        <UserBar title={title} userContext={userContext} onUserSwitch={setUserContext} />
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+          {userContext === 'investor' ? <InvestorPortal page={invPage} /> : renderPage()}
+        </div>
       </main>
     </div>
   );

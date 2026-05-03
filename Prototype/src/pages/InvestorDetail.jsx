@@ -13,10 +13,17 @@ const ACTIVITY_FILTERS = [
   { id: 'invest', label: 'Subscriptions' },
 ];
 
+const DATE_RANGES = [
+  { id: 'all', label: 'All time',     days: null },
+  { id: '90d', label: 'Last 90 days', days: 90   },
+  { id: '30d', label: 'Last 30 days', days: 30   },
+];
+
 export default function InvestorDetail({ navigate, investorId = 'northstar', initialTab }) {
   const investor = INVESTORS.find(inv => inv.id === investorId) || INVESTORS[0];
   const [tab, setTab] = useState(initialTab || 'overview');
   const [activityFilter, setActivityFilter] = useState('all');
+  const [dateRange, setDateRange] = useState('all');
 
   const baseActivity = ACTIVITY.filter(a => a.investorId === investor.id);
 
@@ -31,9 +38,12 @@ export default function InvestorDetail({ navigate, investorId = 'northstar', ini
   const allActivity = [...baseActivity, ...distributionEvents]
     .sort((a, b) => new Date(b.when) - new Date(a.when));
 
-  const filteredActivity = activityFilter === 'all'
-    ? allActivity
-    : allActivity.filter(a => a.kind === activityFilter);
+  const cutoff = DATE_RANGES.find(r => r.id === dateRange)?.days;
+  const cutoffDate = cutoff ? new Date(Date.now() - cutoff * 86400000) : null;
+
+  const visibleActivity = allActivity
+    .filter(a => !cutoffDate || new Date(a.when) >= cutoffDate)
+    .filter(a => activityFilter === 'all' || a.kind === activityFilter);
 
   const tabs = [
     { id: 'overview',  label: 'Overview' },
@@ -196,7 +206,7 @@ export default function InvestorDetail({ navigate, investorId = 'northstar', ini
         <Card title="Documents">
           {[
             { name: 'Subscription Agreement.pdf', date: 'Signed Feb 21, 2026', status: 'Executed' },
-            { name: 'KYC Verification — Jumio.pdf', date: 'Issued Feb 16, 2026', status: 'Verified' },
+            { name: 'KYC Verification — UniFi.pdf', date: 'Issued Feb 16, 2026', status: 'Verified' },
             { name: 'Accreditation Certificate.pdf', date: 'Issued Feb 18, 2026', status: 'Verified' },
             { name: 'W-9 Tax Form.pdf', date: 'Submitted Feb 14, 2026', status: 'On file' },
           ].map((doc, i) => (
@@ -241,7 +251,6 @@ export default function InvestorDetail({ navigate, investorId = 'northstar', ini
                   ['Issuance Date', investor.holdings.issuanceDate],
                   ['Lock-Up Expires', investor.holdings.lockupExpires],
                   ['Transfer Eligible', investor.holdings.transferEligible ? <Pill tone="good">Yes</Pill> : <Pill tone="warn">No — In lock-up</Pill>],
-                  ['Last Distribution', `$${investor.holdings.lastDistribution?.toLocaleString()} (Q1 2026)`],
                 ].map(([label, value]) => (
                   <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <div style={{ fontSize: 11.5, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 0.7 }}>{label}</div>
@@ -263,11 +272,22 @@ export default function InvestorDetail({ navigate, investorId = 'northstar', ini
       )}
 
       {tab === 'activity' && (
-        <Card padding={false} title="Investor Activity" subtitle={`${allActivity.length} events on record`}>
+        <Card padding={false} title="Investor Activity" subtitle={`${visibleActivity.length} of ${allActivity.length} events`} action={
+          <div style={{ display: 'flex', gap: 4 }}>
+            {DATE_RANGES.map(r => (
+              <button key={r.id} onClick={() => setDateRange(r.id)} style={{
+                padding: '4px 10px', borderRadius: 5, border: `1px solid ${dateRange === r.id ? 'var(--teal)' : 'var(--line)'}`,
+                background: dateRange === r.id ? 'var(--teal-soft)' : '#fff',
+                color: dateRange === r.id ? 'var(--teal-deep)' : 'var(--muted)',
+                fontSize: 12, fontWeight: dateRange === r.id ? 600 : 400, cursor: 'pointer', whiteSpace: 'nowrap',
+              }}>{r.label}</button>
+            ))}
+          </div>
+        }>
           <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--line)', padding: '0 20px' }}>
             {ACTIVITY_FILTERS.map(f => {
-              const count = f.id === 'all' ? allActivity.length : allActivity.filter(a => a.kind === f.id).length;
-              if (count === 0 && f.id !== 'all') return null;
+              const count = f.id === 'all' ? visibleActivity.length : visibleActivity.filter(a => a.kind === f.id).length;
+              if (allActivity.filter(a => a.kind === f.id).length === 0 && f.id !== 'all') return null;
               return (
                 <button key={f.id} onClick={() => setActivityFilter(f.id)} style={{
                   padding: '10px 14px', border: 'none', background: 'transparent',
@@ -282,14 +302,14 @@ export default function InvestorDetail({ navigate, investorId = 'northstar', ini
               );
             })}
           </div>
-          {filteredActivity.length === 0 ? (
+          {visibleActivity.length === 0 ? (
             <div style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--muted)' }}>
               <I.clock size={36} style={{ marginBottom: 12, opacity: 0.3 }} />
               <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 6 }}>No activity yet</div>
               <div style={{ fontSize: 13 }}>Events will appear here as this investor progresses through onboarding.</div>
             </div>
           ) : (
-            filteredActivity.map((a, i) => (
+            visibleActivity.map((a, i) => (
               <div key={i} style={{ borderTop: i > 0 ? '1px solid var(--line)' : 'none' }}>
                 <ActivityRow a={a} showInvestorLink={false} />
               </div>
